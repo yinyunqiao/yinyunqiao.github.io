@@ -6,6 +6,20 @@ comments: true
 categories: 
 ---
 
-TODO..
 
-{% gist 6588807 %}
+This is the 
+{% codeblock lang:c++ %}
+
+#include <iostream>
+
+using namespace std;
+
+class node {
+//TODO	
+};
+
+class trie {
+//TODO
+};
+
+{% endcodeblock %}
