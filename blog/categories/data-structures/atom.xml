@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: data_structures | random thoughts]]></title>
+  <link href="http://yinyunqiao.github.io/blog/categories/data-structures/atom.xml" rel="self"/>
+  <link href="http://yinyunqiao.github.io/"/>
+  <updated>2013-09-19T10:31:37+10:00</updated>
+  <id>http://yinyunqiao.github.io/</id>
+  <author>
+    <name><![CDATA[Yunqiao Yin]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[suffix tree]]></title>
+    <link href="http://yinyunqiao.github.io/blog/2013/09/18/suffix-tree/"/>
+    <updated>2013-09-18T13:55:00+10:00</updated>
+    <id>http://yinyunqiao.github.io/blog/2013/09/18/suffix-tree</id>
+    <content type="html"><![CDATA[<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>generalized suffix tree </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="cp">#include &lt;iostream&gt;</span>
+</span><span class='line'><span class="cp">#include &lt;vector&gt;</span>
+</span><span class='line'><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span><span class='line'><span class="k">struct</span> <span class="n">node</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>	<span class="n">node</span> <span class="o">*</span><span class="n">suffix</span><span class="p">;</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'><span class="k">struct</span> <span class="n">edge</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>	<span class="n">string</span> <span class="n">label</span><span class="p">;</span>
+</span><span class='line'>	<span class="n">node</span> <span class="o">*</span><span class="n">dest_node</span><span class="p">;</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">generalized_suffix_tree</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'><span class="k">public</span><span class="o">:</span>
+</span><span class='line'>	<span class="n">generalized_suffix_tree</span><span class="p">()</span> <span class="o">:</span> <span class="n">last_index</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">root</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">last_leaf</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="p">{}</span>
+</span><span class='line'>	<span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">search</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span> <span class="n">word</span><span class="p">);</span><span class="o">&lt;/</span><span class="kt">int</span><span class="o">&gt;&lt;/</span><span class="n">vector</span><span class="o">&gt;&lt;/</span><span class="n">iostream</span><span class="o">&gt;&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">private</span><span class="o">:</span>
+</span><span class='line'>	<span class="n">node</span> <span class="o">*</span><span class="n">search_node</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span><span class="n">word</span><span class="p">);</span>
+</span><span class='line'>	<span class="kt">int</span> <span class="n">last_index</span><span class="p">;</span>
+</span><span class='line'>	<span class="n">node</span> <span class="o">*</span><span class="n">root</span><span class="p">;</span>
+</span><span class='line'>	<span class="n">node</span> <span class="o">*</span><span class="n">last_leaf</span><span class="p">;</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h2 id="follow-ups-and-references">Follow-ups and references</h2>
+<ol>
+  <li><a href="http://en.wikipedia.org/wiki/Suffix_array">Suffix array</a> is a depth-first traversal result of a suffix tree</li>
+  <li><a href="http://en.wikipedia.org/wiki/LCP_array">LCP array</a> longest common prefix array</li>
+</ol>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Implement a simple trie in C++]]></title>
+    <link href="http://yinyunqiao.github.io/blog/2013/09/17/implement-a-simple-trie-in-c-plus-plus/"/>
+    <updated>2013-09-17T10:38:00+10:00</updated>
+    <id>http://yinyunqiao.github.io/blog/2013/09/17/implement-a-simple-trie-in-c-plus-plus</id>
+    <content type="html"><![CDATA[<p>The following introduction is copied from <a href="http://en.wikipedia.org/wiki/Trie">Wikipedia</a>:</p>
+
+<blockquote>
+  <p>In computer science, a trie, also called digital tree or sometimes radix tree or prefix tree 
+(as they can be searched by prefixes), is an ordered tree data structure that is used to store
+a dynamic set or associative array where the keys are usually strings. </p>
+</blockquote>
+
+<p>Trie is a good choice for <a href="http://citeseerx.ist.psu.edu/viewdoc/download;jsessionid=89F5C5F504C452DFA838F1E4AD659D7C?doi=10.1.1.57.2897&amp;rep=rep1&amp;type=pdf">bioinformatic applications (for DNA sequence alighment)</a>.
+Also because trie supports ordered traversal, outputing all keys in the trie is actually a pre-order traversal.
+So obviously trie can be used for sorting, for example <a href="http://en.wikipedia.org/wiki/Burstsort">Burstsort</a>, it’s even faster than <a href="http://en.wikipedia.org/wiki/Quicksort">quicksort</a> for
+large data sets ( Worst case: <script type="math/tex"> O(n\log(n)) </script> ).</p>
+
+<p>A simple trie tree looks like:</p>
+
+<p><div class="graphviz-wrapper">
+
+<!-- Generated by graphviz version 2.26.3 (20100126.1600)
+ -->
+<!-- Title: Graphviz Pages: 1 -->
+<svg role="img" aria-label="" width="710pt" height="46pt"
+ viewBox="0.00 0.00 710.00 46.00"  >
+<title></title>
+<desc>digraph &quot;Graphviz&quot; { 
+  root [label=” “]
+  inn [color=red]
+  in [color=red]
+  to [color=red]
+  tea [color=red]
+  ten [color=red]
+  root -&amp;gt; i [label=i]
+  root -&amp;gt; t [label=t]
+  i -&amp;gt; in [label=n]
+  in -&amp;gt; inn [label=n]
+  t -&amp;gt; to [label=o]
+  t -&amp;gt; te [label=e]
+  te -&amp;gt; tea [label=a]
+  te -&amp;gt; ten [label=n]
+ }</desc>
+
+<g id="graph1" class="graph" transform="scale(1 1) rotate(0) translate(4 42)">
+<title>Graphviz</title>
+<polygon fill="white" stroke="white" points="-4,5 -4,-42 707,-42 707,5 -4,5"/>
+<!-- root -->
+<g id="node1" class="node"><title>root</title>
+<ellipse fill="none" stroke="black" cx="27" cy="-19" rx="27" ry="18.3848"/>
+<text text-anchor="middle" x="27" y="-15.4" font-family="Times Roman,serif" font-size="14.00">”</text>
+</g>
+<!-- inn -->
+<g id="node2" class="node"><title>inn</title>
+<ellipse fill="none" stroke="red" cx="99" cy="-19" rx="27" ry="18.3848"/>
+<text text-anchor="middle" x="99" y="-15.4" font-family="Times Roman,serif" font-size="14.00">n</text>
+</g>
+<!-- in -->
+<g id="node3" class="node"><title>in</title>
+<ellipse fill="none" stroke="red" cx="171" cy="-19" rx="27" ry="18.3848"/>
+<text text-anchor="middle" x="171" y="-15.4" font-family="Times Roman,serif" font-size="14.00">n</text>
+</g>
+<!-- to -->
+<g id="node4" class="node"><title>to</title>
+<ellipse fill="none" stroke="red" cx="243" cy="-19" rx="27" ry="18.3848"/>
+<text text-anchor="middle" x="243" y="-15.4" font-family="Times Roman,serif" font-size="14.00">o</text>
+</g>
+<!-- tea -->
+<g id="node5" class="node"><title>tea</title>
+<ellipse fill="none" stroke="red" cx="315" cy="-19" rx="27" ry="18.3848"/>
+<text text-anchor="middle" x="315" y="-15.4" font-family="Times Roman,serif" font-size="14.00">a</text>
+</g>
+<!-- ten -->
+<g id="node6" class="node"><title>ten</title>
+<ellipse fill="none" stroke="red" cx="387" cy="-19" rx="27" ry="18.3848"/>
+<text text-anchor="middle" x="387" y="-15.4" font-family="Times Roman,serif" font-size="14.00">n</text>
+</g>
+<!-- gt -->
+<g id="node7" class="node"><title>gt</title>
+<ellipse fill="none" stroke="black" cx="459" cy="-19" rx="27" ry="18.3848"/>
+<text text-anchor="middle" x="459" y="-15.4" font-family="Times Roman,serif" font-size="14.00">gt</text>
+</g>
+<!-- i -->
+<g id="node8" class="node"><title>i</title>
+<ellipse fill="none" stroke="black" cx="531" cy="-19" rx="27" ry="18.3848"/>
+<text text-anchor="middle" x="531" y="-15.4" font-family="Times Roman,serif" font-size="14.00">i</text>
+</g>
+<!-- t -->
+<g id="node9" class="node"><title>t</title>
+<ellipse fill="none" stroke="black" cx="603" cy="-19" rx="27" ry="18.3848"/>
+<text text-anchor="middle" x="603" y="-15.4" font-family="Times Roman,serif" font-size="14.00">t</text>
+</g>
+<!-- te -->
+<g id="node10" class="node"><title>te</title>
+<ellipse fill="none" stroke="black" cx="675" cy="-19" rx="27" ry="18.3848"/>
+<text text-anchor="middle" x="675" y="-15.4" font-family="Times Roman,serif" font-size="14.00">e</text>
+</g>
+</g>
+</svg>
+</div></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>naive trie implementation </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="cp">#include &lt;iostream&gt;</span>
+</span><span class='line'><span class="cp">#include &lt;string&gt;</span>
+</span><span class='line'><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">node</span> <span class="p">{</span>
+</span><span class='line'><span class="k">public</span><span class="o">:</span>
+</span><span class='line'>	<span class="n">node</span><span class="p">()</span> <span class="o">:</span> <span class="n">is_word</span><span class="p">(</span><span class="kc">false</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>		<span class="n">memset</span><span class="p">(</span><span class="n">children</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">children</span><span class="p">));</span>
+</span><span class='line'>	<span class="p">}</span>
+</span><span class='line'>	<span class="n">node</span> <span class="o">*</span><span class="n">children</span><span class="p">[</span><span class="mi">26</span><span class="p">];</span>
+</span><span class='line'>	<span class="kt">bool</span> <span class="n">is_word</span><span class="p">;</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">trie</span> <span class="p">{</span>
+</span><span class='line'><span class="k">public</span><span class="o">:</span>
+</span><span class='line'>	<span class="n">trie</span><span class="p">()</span> <span class="o">:</span> <span class="n">root</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="p">{}</span>
+</span><span class='line'>	<span class="kt">void</span> <span class="n">insert</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span><span class="n">str</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">root</span><span class="p">)</span>
+</span><span class='line'>			<span class="n">root</span> <span class="o">=</span> <span class="k">new</span> <span class="n">node</span><span class="p">;</span>
+</span><span class='line'>		<span class="n">node</span> <span class="o">*</span><span class="n">loc</span> <span class="o">=</span> <span class="n">root</span><span class="p">;</span>
+</span><span class='line'>		<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">str</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>			<span class="kt">int</span> <span class="n">idx</span> <span class="o">=</span> <span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="sc">&#39;a&#39;</span><span class="p">;</span>
+</span><span class='line'>			<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">loc</span><span class="o">-&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">children</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span> <span class="p">{</span>
+</span><span class='line'>				<span class="n">loc</span><span class="o">-&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">children</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="k">new</span> <span class="n">node</span><span class="p">;</span>
+</span><span class='line'>			<span class="p">}</span>
+</span><span class='line'>			<span class="n">loc</span> <span class="o">=</span> <span class="n">loc</span><span class="o">-&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">children</span><span class="p">[</span><span class="n">idx</span><span class="p">];</span>
+</span><span class='line'>		<span class="p">}</span>
+</span><span class='line'>		<span class="n">loc</span><span class="o">-&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">is_word</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+</span><span class='line'>	<span class="p">}</span>
+</span><span class='line'>	<span class="kt">void</span> <span class="n">remove</span> <span class="p">(</span><span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span><span class="n">str</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>		<span class="n">node</span> <span class="o">*</span><span class="n">loc</span> <span class="o">=</span> <span class="n">find_node</span><span class="p">(</span><span class="n">str</span><span class="p">);</span>
+</span><span class='line'>		<span class="k">if</span> <span class="p">(</span><span class="n">loc</span><span class="p">)</span> <span class="n">loc</span><span class="o">-&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">is_word</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+</span><span class='line'>	<span class="p">}</span>
+</span><span class='line'>	<span class="kt">bool</span> <span class="n">prefix</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span><span class="n">str</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>		<span class="k">return</span> <span class="o">!</span><span class="n">str</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span> <span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span><span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span> <span class="n">find_node</span><span class="p">(</span><span class="n">str</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>	<span class="p">}</span>
+</span><span class='line'>	<span class="kt">bool</span> <span class="n">search</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span><span class="n">str</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>		<span class="n">node</span> <span class="o">*</span><span class="n">loc</span> <span class="o">=</span> <span class="n">find_node</span><span class="p">(</span><span class="n">str</span><span class="p">);</span>
+</span><span class='line'>		<span class="k">return</span> <span class="n">loc</span> <span class="o">?</span> <span class="n">loc</span><span class="o">-&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">is_word</span> <span class="o">:</span> <span class="kc">false</span><span class="p">;</span>
+</span><span class='line'>	<span class="p">}</span>
+</span><span class='line'><span class="k">private</span><span class="o">:</span>
+</span><span class='line'>	<span class="n">node</span> <span class="o">*</span><span class="n">root</span><span class="p">;</span>
+</span><span class='line'>	<span class="n">node</span> <span class="o">*</span><span class="n">find_node</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span><span class="n">str</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>		<span class="n">node</span> <span class="o">*</span><span class="n">loc</span> <span class="o">=</span> <span class="n">root</span><span class="p">;</span>
+</span><span class='line'>		<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">str</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>			<span class="kt">int</span> <span class="n">idx</span> <span class="o">=</span> <span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="sc">&#39;a&#39;</span><span class="p">;</span>
+</span><span class='line'>			<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">loc</span><span class="o">-&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">children</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>			<span class="n">loc</span> <span class="o">=</span> <span class="n">loc</span><span class="o">-&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">children</span><span class="p">[</span><span class="n">idx</span><span class="p">];</span>
+</span><span class='line'>		<span class="p">}</span>
+</span><span class='line'>		<span class="k">return</span> <span class="n">loc</span><span class="p">;</span>
+</span><span class='line'>	<span class="p">}</span>
+</span><span class='line'><span class="p">};</span><span class="o">&lt;/</span><span class="n">string</span><span class="o">&gt;&lt;/</span><span class="n">iostream</span><span class="o">&gt;&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h2 id="problems">Problems</h2>
+<p>The above implemetation does not use space efficiently. The space complexity is <script type="math/tex"> O(m^n) </script>, m = 26 for just English characters, and things get even worse when deal with unicode characters.</p>
+
+<h2 id="follow-ups-and-references">Follow-ups and references</h2>
+<ol>
+  <li><a href="http://linux.thai.net/~thep/datrie/">Tripple array trie and double array trie</a></li>
+  <li><a href="http://en.wikipedia.org/wiki/Ternary_search_tree">http://en.wikipedia.org/wiki/Ternary_search_tree</a></li>
+  <li><a href="http://en.wikipedia.org/wiki/BK-tree">BK-tree</a> is an interesting data structure for fuzzy string search, popular for spell checking, see also <a href="http://blog.notdot.net/2007/4/Damn-Cool-Algorithms-Part-1-BK-Trees">Damn Cool Algorithms, Part 1: BK-Trees</a></li>
+  <li><a href="http://en.wikipedia.org/wiki/Patricia_tree">http://en.wikipedia.org/wiki/Patricia_tree</a></li>
+  <li><a href="http://wenku.baidu.com/view/71e82437f111f18583d05a54.html">双数组Trie树原理</a></li>
+  <li><a href="http://stevehanov.ca/blog/index.php?id=120">A Succinct Trie</a>, this is a very impressive way to encode trie with bit strings, uses the <a href="http://en.wikipedia.org/wiki/Succinct_data_structure">Succinct data structure</a>.</li>
+  <li><a href="http://www.cs.cmu.edu/afs/cs/project/aladdin/.../00063533.pdf‎">Space-efficient Static Trees and Graphs</a> Guy Jacobson</li>
+</ol>
+
+]]></content>
+  </entry>
+  
+</feed>
